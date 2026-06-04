@@ -1,0 +1,25 @@
+name: Deploy to AWS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Deploy to EC2
+        uses: appleboy/scp-action@v0.1.7
+
+        with:
+          host: ${{ secrets.AWS_HOST }}
+          username: ${{ secrets.AWS_USER }}
+          key: ${{ secrets.AWS_PRIVATE_KEY }}
+          source: "."
+          target: "/var/www/sample-app"
